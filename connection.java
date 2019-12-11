@@ -30,12 +30,13 @@ public class connection {
                 "(5) Detailed Reservation Information\n" +
                 "(6) Revenue\n";
         System.out.print(prompt);
+        System.out.print("Enter input: ");
         Scanner input = new Scanner(System.in);
         int choice = input.nextInt();
         while(choice != 0){
             System.out.println(choice);
             handler.handle(choice);
-            System.out.print(">>");
+            System.out.print("Enter input: ");
             choice = input.nextInt();
         }
     }
