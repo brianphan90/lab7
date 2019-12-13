@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.Date;
-public class choiceHandler {
+public class InnReservations{
 
 
     public void handle(int choice){
