@@ -6,4 +6,4 @@ Zachary Liu
 Kevin Dang
 Charles Zoeller
 Brian Phan
-Nikhil 
+Nikhil Patolia
