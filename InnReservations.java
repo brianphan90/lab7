@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.Date;
-public class choiceHandler {
+public class InnReservations{
 
 
     public void handle(int choice){
@@ -25,6 +25,7 @@ public class choiceHandler {
                 detailedRes();
                 break;
             case 6:
+                showRoomRevenues();
                 break;
 
         }
@@ -358,6 +359,128 @@ public class choiceHandler {
 
             }
 
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            System.err.println("Unable to connect to database");
+            System.exit(1);
+        }
+    }
+
+
+    public void showRoomRevenues() {
+        try (Connection conn = DriverManager.getConnection(System.getenv("LAB7_JDBC_URL"),
+                System.getenv("LAB7_JDBC_USER"), System.getenv("LAB7_JDBC_PW"))) {
+                try (PreparedStatement pstmt = conn.prepareStatement("WITH mainTable AS(\n" +
+                        "SELECT Roomname, Month, SUM(Revenue) AS Revenue\n" +
+                        "    FROM(\n" +
+                        "        SELECT RoomName,MONTHNAME(newCheckIn) AS Month, DATEDIFF(newCheckout, newCheckIn) * Rate AS Revenue\n" +
+                        "        FROM(\n" +
+                        "            SELECT \n" +
+                        "            RoomName,\n" +
+                        "            Rate,\n" +
+                        "            CheckIn AS newCheckIn, \n" +
+                        "            CASE WHEN MONTH(CheckIn) != MONTH (Checkout) THEN LAST_DAY(CheckIn) ELSE Checkout END AS newCheckout\n" +
+                        "            FROM lab7_reservations res\n" +
+                        "            JOIN lab7_rooms r\n" +
+                        "            ON res.Room = r.RoomCode\n" +
+                        "        ) AS a\n" +
+                        "        \n" +
+                        "        UNION\n" +
+                        "        \n" +
+                        "        SELECT RoomName, MONTHNAME(newCheckIn) AS Month, DATEDIFF(newCheckout, newCheckIn) * Rate AS Revenue\n" +
+                        "        FROM(\n" +
+                        "            SELECT \n" +
+                        "            RoomName,\n" +
+                        "            Rate,\n" +
+                        "            CASE WHEN MONTH(CheckIn) != MONTH (Checkout) THEN DATE_ADD(LAST_DAY(CheckIn), INTERVAL 1 DAY) END AS newCheckIn,\n" +
+                        "            Checkout AS newCheckout\n" +
+                        "            FROM lab7_reservations res\n" +
+                        "            JOIN lab7_rooms r\n" +
+                        "            ON res.Room = r.RoomCode\n" +
+                        "        ) AS b\n" +
+                        "        WHERE b.newCheckIn IS NOT NULL\n" +
+                        "    )AS main\n" +
+                        "    GROUP BY RoomName, Month\n" +
+                        ")\n" +
+                        "SELECT c.RoomName,\n" +
+                        "SUM(January) AS January,\n" +
+                        "SUM(February) AS February,\n" +
+                        "SUM(March) AS March,\n" +
+                        "SUM(April) AS April,\n" +
+                        "SUM(May) AS May,\n" +
+                        "SUM(June) AS June,\n" +
+                        "SUM(July) AS July,\n" +
+                        "SUM(August) AS August,\n" +
+                        "SUM(September) AS September,\n" +
+                        "SUM(October) AS October,\n" +
+                        "SUM(November) AS November,\n" +
+                        "SUM(December) AS December,\n" +
+                        "d.Total\n" +
+                        "FROM(\n" +
+                        "    select Roomname,\n" +
+                        "    CASE WHEN Month = \"January\" THEN Revenue END AS January,\n" +
+                        "    CASE WHEN Month = \"February\" THEN Revenue END AS February,\n" +
+                        "    CASE WHEN Month = \"March\" THEN Revenue END AS March,\n" +
+                        "    CASE WHEN Month = \"April\" THEN Revenue END AS April,\n" +
+                        "    CASE WHEN Month = \"May\" THEN Revenue END AS May,\n" +
+                        "    CASE WHEN Month = \"June\" THEN Revenue END AS June,\n" +
+                        "    CASE WHEN Month = \"July\" THEN Revenue END AS July,\n" +
+                        "    CASE WHEN Month = \"August\" THEN Revenue END AS August,\n" +
+                        "    CASE WHEN Month = \"September\" THEN Revenue END AS September,\n" +
+                        "    CASE WHEN Month = \"October\" THEN Revenue END AS October,\n" +
+                        "    CASE WHEN Month = \"November\" THEN Revenue END AS November,\n" +
+                        "    CASE WHEN Month = \"December\" THEN Revenue END AS December\n" +
+                        "    from mainTable\n" +
+                        ")AS c\n" +
+                        "\n" +
+                        "JOIN(\n" +
+                        "    SELECT Roomname, SUM(Revenue) AS Total\n" +
+                        "        FROM(\n" +
+                        "            SELECT RoomName,MONTHNAME(newCheckIn) AS Month, DATEDIFF(newCheckout, newCheckIn) * Rate AS Revenue\n" +
+                        "            FROM(\n" +
+                        "                SELECT \n" +
+                        "                RoomName,\n" +
+                        "                Rate,\n" +
+                        "                CheckIn AS newCheckIn, \n" +
+                        "                CASE WHEN MONTH(CheckIn) != MONTH (Checkout) THEN LAST_DAY(CheckIn) ELSE Checkout END AS newCheckout\n" +
+                        "                FROM lab7_reservations res\n" +
+                        "                JOIN lab7_rooms r\n" +
+                        "                ON res.Room = r.RoomCode\n" +
+                        "            ) AS a\n" +
+                        "            \n" +
+                        "            UNION\n" +
+                        "            \n" +
+                        "            SELECT RoomName, MONTHNAME(newCheckIn) AS Month, DATEDIFF(newCheckout, newCheckIn) * Rate AS Revenue\n" +
+                        "            FROM(\n" +
+                        "                SELECT \n" +
+                        "                RoomName,\n" +
+                        "                Rate,\n" +
+                        "                CASE WHEN MONTH(CheckIn) != MONTH (Checkout) THEN DATE_ADD(LAST_DAY(CheckIn), INTERVAL 1 DAY) END AS newCheckIn,\n" +
+                        "                Checkout AS newCheckout\n" +
+                        "                FROM lab7_reservations res\n" +
+                        "                JOIN lab7_rooms r\n" +
+                        "                ON res.Room = r.RoomCode\n" +
+                        "            ) AS b\n" +
+                        "            WHERE b.newCheckIn IS NOT NULL\n" +
+                        "        )AS main\n" +
+                        "        GROUP BY RoomName\n" +
+                        ") AS d\n" +
+                        "ON c.RoomName = d.Roomname\n" +
+                        "GROUP BY c.Roomname\n"))
+                {
+                    try (ResultSet rs = pstmt.executeQuery()){
+                        int count = 0;
+                        System.out.format("%s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%8.2s\n", "RoomName", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Total");
+                        while (rs.next()) {
+                            System.out.format("%30s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%8.2s\n",
+                                    rs.getString("RoomName"), rs.getDouble("January"), rs.getDouble("February"), rs.getDouble("March")
+                                    , rs.getDouble("April"), rs.getDouble("May"), rs.getDouble("June"), rs.getDouble("July")
+                                    , rs.getDouble("August"), rs.getDouble("September"), rs.getDouble("October"), rs.getDouble("November")
+                                    , rs.getDouble("December"), rs.getDouble("Total"));
+                            count++;
+                        }
+                    }
+                }
         } catch (Exception e) {
             System.err.println(e.getMessage());
             System.err.println("Unable to connect to database");
