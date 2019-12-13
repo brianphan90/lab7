@@ -34,11 +34,9 @@ public class ChoiceHandler{
     }
 
     public static void roomsAndRates() throws SQLException{
-        System.out.println("reached");
         try (Connection conn = DriverManager.getConnection
             (System.getenv("LAB7_JDBC_URL"), System.getenv("LAB7_JDBC_USER"), 
             System.getenv("LAB7_JDBC_PW"))) {
-            System.out.println("reached1");
             String sql = 
                 "with RoomReservations as ( " +
                 "select Room, " +
@@ -118,13 +116,12 @@ public class ChoiceHandler{
 
               try(ResultSet rs = stmt.executeQuery(sql)){
 
-                System.out.println("reached");
 
-                System.out.format("|%7s|%17s|%17s|%17s|%19s|\n", 
+                System.out.format("|%4s|%15s|%17s|%18s|%18s|\n", 
                   "Room", "PopularityScore", "NextAvailableDate","MostRecentLength","MostRecentCheckOut");
 
                 while (rs.next()) {
-                    System.out.format("|%7s|%17.2f|%17s|%17d|%19s|\n",
+                    System.out.format("|%4s|%15.2f|%17s|%18d|%18s|\n",
                             rs.getString("Room"), rs.getDouble("PopularityScore"), 
                             rs.getDate("NextAvailableDate").toString(), rs.getInt("MostRecentLength"),
                             rs.getDate("MostRecentCheckOut").toString());
