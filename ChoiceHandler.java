@@ -486,11 +486,11 @@ public class ChoiceHandler{
                         int count = 0;
                         System.out.format("%30s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s\n", "RoomName", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Total");
                         while (rs.next()) {
-                            System.out.format("%30s |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f\n",
-                                    rs.getString("RoomName"), rs.getDouble("January"), rs.getDouble("February"), rs.getDouble("March")
-                                    , rs.getDouble("April"), rs.getDouble("May"), rs.getDouble("June"), rs.getDouble("July")
-                                    , rs.getDouble("August"), rs.getDouble("September"), rs.getDouble("October"), rs.getDouble("November")
-                                    , rs.getDouble("December"), rs.getDouble("Total"));
+                            System.out.format("%30s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s\n",
+                                    rs.getString("RoomName"), String.format("$%.2f", rs.getDouble("January")), String.format("$%.2f", rs.getDouble("February")), String.format("$%.2f", rs.getDouble("March")
+                                    ), String.format("$%.2f", rs.getDouble("April")), String.format("$%.2f", rs.getDouble("May")), String.format("$%.2f", rs.getDouble("June")), String.format("$%.2f", rs.getDouble("July")
+                                    ), String.format("$%.2f", rs.getDouble("August")), String.format("$%.2f", rs.getDouble("September")), String.format("$%.2f", rs.getDouble("October")), String.format("$%.2f", rs.getDouble("November")
+                                    ), String.format("$%.2f", rs.getDouble("December")), String.format("$%.2f", rs.getDouble("Total")));
                             count++;
                         }
                     }
