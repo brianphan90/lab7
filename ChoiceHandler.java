@@ -32,6 +32,293 @@ public class ChoiceHandler{
         }
 
     }
+    public void printResultSet(ResultSet res) throws SQLException{
+      while (res.next()) {
+        String rowNum = res.getString("Row_num");
+        String roomCode = res.getString("RoomCode");
+        String roomName = res.getString("RoomName");
+        System.out.println(rowNum + ",  " + roomCode + ", " + roomName);
+      }
+    }
+    public double getTotalCost(double rate, Date checkIn, Date checkOut) {
+      int numWeekDays;
+      int numWeekendDays;
+      double taxRate = 1.18;
+      return 0;
+    }
+    public String[] printOrderConfirmation(ResultSet res, int rowNum, String firstName, String lastName, Date checkIn, Date checkOut, int numAdults, int numChildren) throws SQLException{
+      String[] codeAndRoom= new String[3];
+      res.beforeFirst();
+      while (res.next()) {
+        if (rowNum == res.getInt("Row_num")) {
+          String rCode = res.getString("RoomCode");
+          String dCode = res.getString("CODE");
+          double rate = res.getDouble("Rate");
+          String roomName = res.getString("RoomName");
+          String dbedType = res.getString("bedType");
+          double totalCost = getTotalCost(rate, checkIn, checkOut);
+          codeAndRoom[0] = dCode;
+          codeAndRoom[1] = rCode;
+          codeAndRoom[2] = rate + "";
+          // printing order confrimation TODO: calc total cost
+          System.out.println("Your order confirmation is printed below:");
+          System.out.println("First Name: " + firstName);
+          System.out.println("Last Name: " + lastName);
+          System.out.println("Room Code: " + rCode);
+          System.out.println("Room Name: " + roomName);
+          System.out.println("bedType: " + dbedType);
+          System.out.println("CheckIn: " + checkIn);
+          System.out.println("CheckOut: " + checkOut);
+          System.out.println("Number of Adults: " + numAdults);
+          System.out.println("Number of Children: " + numChildren);
+          System.out.println("Total Cost: " + totalCost);
+          break;
+        }
+      }
+      return codeAndRoom;
+    }
+    public void getReservations() throws SQLException {
+    try (Connection conn = DriverManager.getConnection(System.getenv("LAB7_JDBC_URL"),  System.getenv("LAB7_JDBC_USER"), System.getenv("LAB7_JDBC_PW"))) {
+        Scanner input = new Scanner(System.in);
+        // prompt user input
+        System.out.println("Please enter the following values:\nFirst Name:");
+        String firstName = input.nextLine().trim();
+        System.out.println("Last Name:");
+        String lastName = input.nextLine().trim();
+        System.out.println("Room Code or 'Any' for no preference:");
+        String code = input.nextLine().trim();
+        System.out.println("Bed Type or 'Any' for no preference:");
+        String bedType = input.nextLine().trim();
+        System.out.println("Checkin Date:");
+        Date checkIn = Date.valueOf(input.nextLine().trim());
+        System.out.println("Checkout Date:");
+        Date checkOut = Date.valueOf(input.nextLine().trim());
+        System.out.println("Number of Children:");
+        int numChildren = Integer.valueOf(input.nextLine().trim());
+        System.out.println("Number of Adults:");
+        int numAdults = Integer.valueOf(input.nextLine().trim());
+        int totalPeople = numAdults + numChildren;
+        if (totalPeople > 4) {
+          System.out.println("No suitable rooms available");
+          return;
+        }
+
+        if (code.equals("Any") || bedType.equals("Any")) {
+          // if no room preference
+          if (code.equals("Any") && !bedType.equals("Any")) {
+            try (PreparedStatement d = conn.prepareStatement("select Row_Number() over (Order by RoomCode) as Row_num, RoomCode, RoomName from lab7_rooms ro join lab7_reservations re on RoomCode = Room where (Checkout > ? and checkin < ?) and bedType = ? and maxOcc >= ?")) {
+              d.setObject(1, checkIn);
+              d.setObject(2, checkOut);
+              d.setObject(3, bedType);
+              d.setObject(4, totalPeople);
+              ResultSet res = d.executeQuery();
+              // meaning not an empty set
+              if(res.next()) {
+                // prints resultset
+                printResultSet(res);
+                // prompt user to pick choice of which room by roomNumber
+                System.out.println("Choose a Row_Num to specify room choice or (Cancel) to return to main menu");
+                String rowNum = input.nextLine().trim();
+                if (rowNum.equals("Cancel")) {
+                  System.out.println("Cancelling Request");
+                  return;
+                }
+
+                // display user confirmation screen
+                int row_Num = Integer.valueOf(rowNum);
+                // code is index 0 and roomcode is index 1 and rate is index 2
+                String[] codeAndRoom = printOrderConfirmation(res, row_Num, firstName, lastName, checkIn, checkOut, numAdults, numChildren);
+
+                //allowing user to cancel or confirm 
+                System.out.println("Please type Cancel or Confirm");
+                String confirmation = input.nextLine().trim();
+                if (confirmation.equals("Cancel")) {
+                  System.out.println("Cancelling Request");
+                  return;
+                }
+                if (confirmation.equals("Confirm")) {
+                  // insert new reservation;
+                  try (PreparedStatement c = conn.prepareStatement("INSERT INTO lab7_reservations (CODE, Room, CheckIn, Checkout, Rate, LastName, FirstName, Adults, Kids) VALUES (?,?,?,?,?,?,?,?,?)")) {
+                    c.setObject(1, codeAndRoom[0]);
+                    c.setObject(2, codeAndRoom[1]);
+                    c.setObject(3, checkIn);
+                    c.setObject(4, checkOut);
+                    c.setObject(5, codeAndRoom[2]);
+                    c.setObject(6, lastName);
+                    c.setObject(7, firstName);
+                    c.setObject(8, numAdults);
+                    c.setObject(9, numChildren);
+                  }
+                }
+              } else {
+                // empty set
+                System.out.println("No rooms available. Here are some reccomendations:");
+                getReccomendations();
+              }
+            }
+          }
+          // if no bed preference
+          if (bedType.equals("Any") && !code.equals("Any")) {
+            try (PreparedStatement d = conn.prepareStatement("select Row_Number() over (Order by RoomCode) as Row_num, RoomCode, RoomName from lab7_rooms ro join lab7_reservations re on RoomCode = Room where (Checkout > ? and checkin < ?) and room = (select room from lab7_reservations where code = ?) and maxOcc >= ?")) {
+              d.setObject(1,checkIn);
+              d.setObject(2,checkOut);
+              d.setObject(3,code);
+              d.setObject(4,totalPeople);
+              ResultSet res = d.executeQuery();
+              //check if rooms are available
+
+              if (res.next()) {
+                printResultSet(res);
+                // prompts user to select room option
+                System.out.println("Choose a Row_Num to specify room choice or (Cancel) to return to main menu");
+                String rowNum = input.nextLine().trim();
+                if (rowNum.equals("Cancel")) {
+                  System.out.println("Cancelling Request");
+                  return;
+                }
+                // display user confirmation screen
+                int row_Num = Integer.valueOf(rowNum);
+                String[] codeAndRoom = printOrderConfirmation(res, row_Num, firstName, lastName, checkIn, checkOut, numAdults, numChildren);
+
+                // checking order confirmation
+                //allowing user to cancel or confirm 
+                System.out.println("Please type Cancel or Confirm");
+                String confirmation = input.nextLine().trim();
+                if (confirmation.equals("Cancel")) {
+                  System.out.println("Cancelling Request");
+                  return;
+                }
+                if (confirmation.equals("Confirm")) {
+                  // insert new reservation;
+                  try (PreparedStatement c = conn.prepareStatement("INSERT INTO lab7_reservations (CODE, Room, CheckIn, Checkout, Rate, LastName, FirstName, Adults, Kids) VALUES (?,?,?,?,?,?,?,?,?)")) {
+                    c.setObject(1, codeAndRoom[0]);
+                    c.setObject(2, codeAndRoom[1]);
+                    c.setObject(3, checkIn);
+                    c.setObject(4, checkOut);
+                    c.setObject(5, codeAndRoom[2]);
+                    c.setObject(6, lastName);
+                    c.setObject(7, firstName);
+                    c.setObject(8, numAdults);
+                    c.setObject(9, numChildren);
+                  }
+                }
+              } else {
+                // empty set
+                System.out.println("No rooms available. Here are some reccomendations:");
+                getReccomendations();                
+              }
+            }
+          }
+          // if no bed and room preference
+          if (bedType.equals("Any") && code.equals("Any")) {
+            try (PreparedStatement d = conn.prepareStatement("select Row_Number() over (Order by RoomCode) as Row_num, RoomCode, RoomName from lab7_rooms ro join lab7_reservations re on RoomCode = Room where (Checkout > ? and checkin < ?) and maxOcc >= ?")) {
+              d.setObject(1,checkIn);
+              d.setObject(2,checkOut);
+              d.setObject(3,totalPeople);
+              ResultSet res = d.executeQuery();
+              // check if rooms are available
+              // if yes
+              if (res.next()) {
+                // print result set
+                printResultSet(res);
+                // prompts user to select room option
+                System.out.println("Choose a Row_Num to specify room choice or (Cancel) to return to main menu");
+                String rowNum = input.nextLine().trim();
+                if (rowNum.equals("Cancel")) {
+                  System.out.println("Cancelling Request");
+                  return;
+                }
+                // display user confirmation screen
+                int row_Num = Integer.valueOf(rowNum);
+                String[] codeAndRoom = printOrderConfirmation(res, row_Num, firstName, lastName, checkIn, checkOut, numAdults, numChildren);
+                // checking order confirmation
+                //allowing user to cancel or confirm 
+                System.out.println("Please type Cancel or Confirm");
+                String confirmation = input.nextLine().trim();
+                if (confirmation.equals("Cancel")) {
+                  System.out.println("Cancelling Request");
+                  return;
+                }
+                if (confirmation.equals("Confirm")) {
+                  // insert new reservation;
+                  try (PreparedStatement c = conn.prepareStatement("INSERT INTO lab7_reservations (CODE, Room, CheckIn, Checkout, Rate, LastName, FirstName, Adults, Kids) VALUES (?,?,?,?,?,?,?,?,?)")) {
+                    c.setObject(1, codeAndRoom[0]);
+                    c.setObject(2, codeAndRoom[1]);
+                    c.setObject(3, checkIn);
+                    c.setObject(4, checkOut);
+                    c.setObject(5, codeAndRoom[2]);
+                    c.setObject(6, lastName);
+                    c.setObject(7, firstName);
+                    c.setObject(8, numAdults);
+                    c.setObject(9, numChildren);
+                  }
+                }
+              } else {
+                // empty set
+                System.out.println("No rooms available. Here are some reccomendations:");
+                getReccomendations();
+              }
+            }
+          } 
+          // if preferences are selected
+        } else {
+          try (PreparedStatement  d = conn.prepareStatement("select Row_Number() over (Order by RoomCode) as Row_num, RoomCode, RoomName from lab7_rooms ro join lab7_reservations re on RoomCode = Room where (Checkout > ? and checkin < ?) and room = (select room from lab7_reservations where code = ?) and bedType = ? and maxOcc >= ?")) {
+            d.setObject(1, checkIn);
+            d.setObject(2, checkOut);
+            d.setObject(3, code);
+            d.setObject(4, bedType);
+            d.setObject(5, totalPeople);
+            // check if room options are available
+            ResultSet res = d.executeQuery();
+            // rooms exist
+            if (res.next()) {
+              //print result set
+              printResultSet(res);
+              // prompts user to select room option
+              System.out.println("Choose a Row_Num to specify room choice or (Cancel) to return to main menu");
+              String rowNum = input.nextLine().trim();
+              if (rowNum.equals("Cancel")) {
+                System.out.println("Cancelling Request");
+                return;
+              }
+              // display user confirmation screen
+              int row_Num = Integer.valueOf(rowNum);
+              String[] codeAndRoom = printOrderConfirmation(res, row_Num, firstName, lastName, checkIn, checkOut, numAdults, numChildren);
+              // checking order confirmation
+              //allowing user to cancel or confirm 
+              System.out.println("Please type Cancel or Confirm");
+              String confirmation = input.nextLine().trim();
+              if (confirmation.equals("Cancel")) {
+                System.out.println("Cancelling Request");
+                return;
+              }
+              if (confirmation.equals("Confirm")) {
+                // insert new reservation;
+                try (PreparedStatement c = conn.prepareStatement("INSERT INTO lab7_reservations (CODE, Room, CheckIn, Checkout, Rate, LastName, FirstName, Adults, Kids) VALUES (?,?,?,?,?,?,?,?,?)")) {
+                  c.setObject(1, codeAndRoom[0]);
+                  c.setObject(2, codeAndRoom[1]);
+                  c.setObject(3, checkIn);
+                  c.setObject(4, checkOut);
+                  c.setObject(5, codeAndRoom[2]);
+                  c.setObject(6, lastName);
+                  c.setObject(7, firstName);
+                  c.setObject(8, numAdults);
+                  c.setObject(9, numChildren);
+                }
+              }
+            } else {
+              // empty set
+              System.out.println("No rooms available. Here are some reccomendations:");
+              getReccomendations();
+            }
+          }
+        }
+      }
+    }
+    // TODO
+    public void getReccomendations () {
+
+    }
 
     public static void roomsAndRates() throws SQLException{
         try (Connection conn = DriverManager.getConnection
