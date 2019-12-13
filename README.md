@@ -9,7 +9,7 @@ Brian Phan
 Nikhil Patolia
 
 Responsibilities
-FR1  - KEVIN
+FR1 - KEVIN
 FR2 - ZACH
 FR3 - CHARLES
 FR4 - BRIAN
