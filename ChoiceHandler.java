@@ -124,7 +124,7 @@ public class ChoiceHandler{
                   "Room", "PopularityScore", "NextAvailableDate","MostRecentLength","MostRecentCheckOut");
 
                 while (rs.next()) {
-                    System.out.format("|%7s|%17.2f|%17s|%17f|%19s|\n",
+                    System.out.format("|%7s|%17.2f|%17s|%17d|%19s|\n",
                             rs.getString("Room"), rs.getDouble("PopularityScore"), 
                             rs.getDate("NextAvailableDate").toString(), rs.getInt("MostRecentLength"),
                             rs.getDate("MostRecentCheckOut").toString());
