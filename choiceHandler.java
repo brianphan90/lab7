@@ -279,7 +279,7 @@ public class choiceHandler {
     public void showRoomRevenues() {
         try (Connection conn = DriverManager.getConnection(System.getenv("LAB7_JDBC_URL"),
                 System.getenv("LAB7_JDBC_USER"), System.getenv("LAB7_JDBC_PW"))) {
-                try (PreparedStatement ps = conn.prepareStatement("WITH mainTable AS(\n" +
+                try (PreparedStatement pstmt = conn.prepareStatement("WITH mainTable AS(\n" +
                         "SELECT Roomname, Month, SUM(Revenue) AS Revenue\n" +
                         "    FROM(\n" +
                         "        SELECT RoomName,MONTHNAME(newCheckIn) AS Month, DATEDIFF(newCheckout, newCheckIn) * Rate AS Revenue\n" +
@@ -377,8 +377,18 @@ public class choiceHandler {
                         "ON c.RoomName = d.Roomname\n" +
                         "GROUP BY c.Roomname\n"))
                 {
-                    ps.setObject(1, code);
-                    res = ps.executeQuery();
+                    try (ResultSet rs = pstmt.executeQuery()){
+                        int count = 0;
+                        System.out.format("%s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%8.2s\n", "RoomName", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Total");
+                        while (rs.next()) {
+                            System.out.format("%30s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%8.2s\n",
+                                    rs.getString("RoomName"), rs.getDouble("January"), rs.getDouble("February"), rs.getDouble("March")
+                                    , rs.getDouble("April"), rs.getDouble("May"), rs.getDouble("June"), rs.getDouble("July")
+                                    , rs.getDouble("August"), rs.getDouble("September"), rs.getDouble("October"), rs.getDouble("November")
+                                    , rs.getDouble("December"), rs.getDouble("Total"));
+                            count++;
+                        }
+                    }
                 }
         } catch (Exception e) {
             System.err.println(e.getMessage());
