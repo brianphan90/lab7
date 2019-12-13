@@ -7,6 +7,8 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.Date;
+import java.time.LocalDate; 
+import java.time.Period; 
 public class ChoiceHandler{
 
     public void handle(int choice) throws SQLException {
@@ -32,6 +34,9 @@ public class ChoiceHandler{
         }
 
     }
+    public LocalDate convertToLocalDate(Date dateToConvert) {
+        return new java.sql.Date(dateToConvert.getTime()).toLocalDate();
+    }
     public void printResultSet(ResultSet res) throws SQLException{
       while (res.next()) {
         String rowNum = res.getString("Row_num");
@@ -41,10 +46,12 @@ public class ChoiceHandler{
       }
     }
     public double getTotalCost(double rate, Date checkIn, Date checkOut) {
-      int numWeekDays;
-      int numWeekendDays;
-      double taxRate = 1.18;
-      return 0;
+        LocalDate cIn = convertToLocalDate(checkIn);
+        LocalDate cOut = convertToLocalDate(checkOut);
+        Period period = Period.between(cOut, cIn);
+        int diff = period.getDays();
+        double cost = diff * rate * 1.18;
+      return cost;
     }
     public String[] printOrderConfirmation(ResultSet res, int rowNum, String firstName, String lastName, Date checkIn, Date checkOut, int numAdults, int numChildren) throws SQLException{
       String[] codeAndRoom= new String[3];
@@ -148,12 +155,13 @@ public class ChoiceHandler{
                     c.setObject(7, firstName);
                     c.setObject(8, numAdults);
                     c.setObject(9, numChildren);
+                    c.executeQuery();
                   }
                 }
               } else {
                 // empty set
                 System.out.println("No rooms available. Here are some reccomendations:");
-                getReccomendations();
+                getReccomendations(checkIn, checkOut, totalPeople, conn);
               }
             }
           }
@@ -200,12 +208,13 @@ public class ChoiceHandler{
                     c.setObject(7, firstName);
                     c.setObject(8, numAdults);
                     c.setObject(9, numChildren);
+                    c.executeQuery();
                   }
                 }
               } else {
                 // empty set
                 System.out.println("No rooms available. Here are some reccomendations:");
-                getReccomendations();                
+                getReccomendations(checkIn, checkOut, totalPeople, conn);                
               }
             }
           }
@@ -251,12 +260,13 @@ public class ChoiceHandler{
                     c.setObject(7, firstName);
                     c.setObject(8, numAdults);
                     c.setObject(9, numChildren);
+                    c.executeQuery();
                   }
                 }
               } else {
                 // empty set
                 System.out.println("No rooms available. Here are some reccomendations:");
-                getReccomendations();
+                getReccomendations(checkIn, checkOut, totalPeople, conn);
               }
             }
           } 
@@ -304,20 +314,36 @@ public class ChoiceHandler{
                   c.setObject(7, firstName);
                   c.setObject(8, numAdults);
                   c.setObject(9, numChildren);
+                  c.executeQuery();
                 }
               }
             } else {
               // empty set
               System.out.println("No rooms available. Here are some reccomendations:");
-              getReccomendations();
+              getReccomendations(checkIn, checkOut, totalPeople, conn);
             }
           }
         }
       }
     }
     // TODO
-    public void getReccomendations () {
-
+    public void getReccomendations (Date checkIn, Date checkOut, int totalPeople, Connection conn) throws SQLException {
+        System.out.println("Reccomended Rooms:");
+        try (PreparedStatement  d = conn.prepareStatement("select Row_Number() over (Order by RoomCode) as Row_num, RoomCode, RoomName from lab7_rooms ro join lab7_reservations re on RoomCode = Room where (Checkout > ? and checkin < ?) and maxOcc >= ?")) {
+            d.setObject(1, checkIn);
+            d.setObject(2, checkOut);
+            d.setObject(3, totalPeople);
+            ResultSet res = d.executeQuery();
+            int i = 0;
+            // prints first 5 rooms
+            while (res.next() && i < 5) {
+                String rowNum = res.getString("Row_num");
+                String roomCode = res.getString("RoomCode");
+                String roomName = res.getString("RoomName");
+                System.out.println(rowNum + ",  " + roomCode + ", " + roomName);
+                i++;
+            }
+        }
     }
 
     public static void roomsAndRates() throws SQLException{
