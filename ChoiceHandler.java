@@ -17,6 +17,7 @@ public class ChoiceHandler{
                 roomsAndRates();
                 break;
             case 2:
+                getReservations();
                 break;
             case 3:
                 updateRes();
