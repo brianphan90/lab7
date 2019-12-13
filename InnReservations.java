@@ -4,9 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class connection {
-    public connection() {
-    }
+public class InnReservations {
 
    /* public static void getConnection() {
         try {

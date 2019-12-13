@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.Date;
-public class InnReservations{
+public class ChoiceHandler{
 
     public static void handle(int choice) throws SQLException{
         switch (choice){
