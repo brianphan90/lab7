@@ -1,0 +1,316 @@
+commit 1c7296155a16e9994d138078d79770b764adbaff
+Author: zacharyhliu <zachhliu@yahoo.com>
+Date:   Fri Dec 13 15:49:17 2019 -0800
+
+    Update README.md
+
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 6b97f0eedf2d062e6b4f98625eae03f61a42d1e7
+Author: zacharyhliu <zachhliu@yahoo.com>
+Date:   Fri Dec 13 15:48:54 2019 -0800
+
+    Update ChoiceHandler.java
+
+ ChoiceHandler.java | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 346bab947920bae2e83f2cdf55fa1d94e19c1a4e
+Merge: 6870ecb 859638c
+Author: Zachary  Liu <zacharyliu@Zacharys-MacBook-Pro.local>
+Date:   Fri Dec 13 15:48:16 2019 -0800
+
+    Merge branch 'master' of https://github.com/brianphan90/lab7
+
+commit 6870ecb2ea3a264a58ea531d37d5dcd7687db3d0
+Author: Zachary  Liu <zacharyliu@Zacharys-MacBook-Pro.local>
+Date:   Fri Dec 13 15:48:08 2019 -0800
+
+    added costs and reccomendations to FR2
+
+ ChoiceHandler.java | 46 ++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 36 insertions(+), 10 deletions(-)
+
+commit 859638c1200ef6533a49d6bf101e0ea2cde4e83e
+Author: nikhilpato <34844354+nikhilpato@users.noreply.github.com>
+Date:   Fri Dec 13 15:40:29 2019 -0800
+
+    Update README.md
+    
+    Added what everyone did
+
+ README.md | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+commit 2fe8b37d131794efa6c2f347428fe0d5025e2c74
+Author: zacharyhliu <zachhliu@yahoo.com>
+Date:   Fri Dec 13 15:21:37 2019 -0800
+
+    Update ChoiceHandler.java
+
+ ChoiceHandler.java | 287 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 287 insertions(+)
+
+commit 1d35e07483580200e841c6bfc2b1649d7f25e491
+Merge: 606a1f2 cd3d5fe
+Author: nikhilpato <nikhilpatolia@gmail.com>
+Date:   Fri Dec 13 15:13:46 2019 -0800
+
+    Merge remote-tracking branch 'origin/master'
+
+commit 606a1f275a85d97ae056b23ee042f6cfbfb8d2aa
+Author: nikhilpato <nikhilpatolia@gmail.com>
+Date:   Fri Dec 13 15:13:38 2019 -0800
+
+    R6, added dollar signs and formatted them so it looks normal
+
+ ChoiceHandler.java | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit cd3d5fe8b7b4acf79df23d10cc5f49d9ff06c997
+Author: kvndng <kdang16@calpoly.edu>
+Date:   Fri Dec 13 15:06:06 2019 -0800
+
+    completed fr2
+
+ ChoiceHandler.class   | Bin 17853 -> 0 bytes
+ ChoiceHandler.java    |   7 ++-----
+ InnReservations.class | Bin 1186 -> 0 bytes
+ connection.class      | Bin 1114 -> 0 bytes
+ 4 files changed, 2 insertions(+), 5 deletions(-)
+
+commit 18a3999dfb9a53e2d22cb293dc01d2f58614228e
+Author: nikhilpato <nikhilpatolia@gmail.com>
+Date:   Fri Dec 13 14:55:09 2019 -0800
+
+    R6, added dollar signs
+
+ ChoiceHandler.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit f9f8881c99b4991222036c0bffdb1de00216e2d7
+Merge: 47dc9a8 cd97957
+Author: nikhilpato <nikhilpatolia@gmail.com>
+Date:   Fri Dec 13 14:43:36 2019 -0800
+
+    Merge remote-tracking branch 'origin/master'
+
+commit 47dc9a8b64951c87746fb6d737485210560e4246
+Author: nikhilpato <nikhilpatolia@gmail.com>
+Date:   Fri Dec 13 14:40:29 2019 -0800
+
+    R6, updated formatting
+
+ ChoiceHandler.java | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit cd979577fd29185b0537a0e9efd97934602b301d
+Author: nikhilpato <34844354+nikhilpato@users.noreply.github.com>
+Date:   Fri Dec 13 14:37:37 2019 -0800
+
+    Update README.md
+    
+    Added my last name
+
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit f75bc4215cd41eff54b610000e16d501a70a65f2
+Merge: 6343b86 f20091b
+Author: nikhilpato <nikhilpatolia@gmail.com>
+Date:   Fri Dec 13 14:35:23 2019 -0800
+
+    Merge remote-tracking branch 'origin/master'
+    
+    # Conflicts:
+    #       InnReservations.class
+    #       InnReservations.java
+
+commit 6343b8678cfc1609bbb2e48e4623a873d02d3972
+Author: nikhilpato <nikhilpatolia@gmail.com>
+Date:   Fri Dec 13 14:34:16 2019 -0800
+
+    R6, changed formatting
+
+ InnReservations.class | Bin 9962 -> 13677 bytes
+ InnReservations.java  |   4 ++--
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit f20091b76871cc10af1193dedc6f41bde9427ace
+Author: Kevin Dang <35238405+kvndng@users.noreply.github.com>
+Date:   Fri Dec 13 14:14:39 2019 -0800
+
+    Update ChoiceHandler.java
+
+ ChoiceHandler.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit bea548b28d121e35cbf1d9c5f4886733d945fc68
+Author: Brian Phan <bphan08@unix3.csc.calpoly.edu>
+Date:   Fri Dec 13 14:12:29 2019 -0800
+
+    update
+
+ .connection.java.swp  | Bin 0 -> 12288 bytes
+ ChoiceHandler.class   | Bin 17853 -> 17853 bytes
+ ChoiceHandler.java    |   2 +-
+ InnReservations.class | Bin 1061 -> 1186 bytes
+ InnReservations.java  |  14 ++++++++++----
+ connection.class      | Bin 0 -> 1114 bytes
+ connection.java       |  11 ++++++++---
+ 7 files changed, 19 insertions(+), 8 deletions(-)
+
+commit a426c4f2786adca29820d949f460b0568dbd0378
+Author: Kevin Dang <kevindang@Kevins-MacBook-Pro-2.local>
+Date:   Fri Dec 13 12:56:39 2019 -0800
+
+    updated setup.sh
+
+ ChoiceHandler.class   | Bin 0 -> 17853 bytes
+ ChoiceHandler.java    |   2 +-
+ InnReservations.class | Bin 0 -> 1061 bytes
+ InnReservations.java  |   4 +---
+ setup.sh              |   2 +-
+ 5 files changed, 3 insertions(+), 5 deletions(-)
+
+commit 5a0d697c4315339a11d55a2afc749d6f7d388527
+Author: Kevin Dang <kevindang@Kevins-MacBook-Pro-2.local>
+Date:   Fri Dec 13 12:53:16 2019 -0800
+
+    renamed classes
+
+ ChoiceHandler.java    | 504 +++++++++++++++++++++++++++++++++++++++++++++++++
+ InnReservations.class | Bin 9962 -> 0 bytes
+ InnReservations.java  | 507 ++++----------------------------------------------
+ connection.class      | Bin 1023 -> 0 bytes
+ 4 files changed, 536 insertions(+), 475 deletions(-)
+
+commit 2530615acd5559aff6ef2c812e646e135777d86a
+Merge: 15376ae 39468f3
+Author: Kevin Dang <kevindang@Kevins-MacBook-Pro-2.local>
+Date:   Thu Dec 12 22:51:35 2019 -0800
+
+    Merge branch 'master' of https://github.com/brianphan90/lab7
+
+commit 15376aecc8bc0c7022ff41fb7da29c458c4341cc
+Author: Kevin Dang <kevindang@Kevins-MacBook-Pro-2.local>
+Date:   Thu Dec 12 22:51:22 2019 -0800
+
+    added SQL code for FR1
+
+ choiceHandler.java | 91 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 91 insertions(+)
+
+commit 39468f3671dc3e0ecbd31ce978ea131279a77f05
+Merge: 7f98f08 b884537
+Author: nikhilpato <nikhilpatolia@gmail.com>
+Date:   Thu Dec 12 22:49:57 2019 -0800
+
+    Merge remote-tracking branch 'origin/master'
+
+commit 7f98f086220084918f08a4fa64e95a34e2b0a0fe
+Author: nikhilpato <nikhilpatolia@gmail.com>
+Date:   Thu Dec 12 22:49:45 2019 -0800
+
+    R6 in progress, idk how to work the JDBC but I made the MySQL Query
+
+ choiceHandler.java | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+commit b884537b5a30efadf4be795ceb173b7efe65cad0
+Merge: b58b67d 5d10fac
+Author: Brian Phan <bphan08@unix3.csc.calpoly.edu>
+Date:   Thu Dec 12 22:29:22 2019 -0800
+
+    Merge branch 'master' of https://github.com/brianphan90/lab7
+
+commit b58b67deaaec3461ce4bdfcea5442997965a180b
+Author: Brian Phan <bphan08@unix3.csc.calpoly.edu>
+Date:   Thu Dec 12 22:28:56 2019 -0800
+
+    renamed main class to fit spec
+
+ InnReservations.class                      | Bin 0 -> 9962 bytes
+ choiceHandler.java => InnReservations.java |   2 +-
+ choiceHandler.class                        | Bin 6463 -> 0 bytes
+ 3 files changed, 1 insertion(+), 1 deletion(-)
+
+commit 5d10fac11b9f14ab5c568bea01f864ba324b4dc4
+Merge: 94cd0ed 822dd65
+Author: nikhilpato <nikhilpatolia@gmail.com>
+Date:   Thu Dec 12 22:23:31 2019 -0800
+
+    Merge remote-tracking branch 'origin/master'
+
+commit 822dd653bb5bc6c93fafcf6e4e9ca4a3e3e39554
+Author: zacharyhliu <zachhliu@yahoo.com>
+Date:   Thu Dec 12 18:24:05 2019 -0800
+
+    Update README.md
+
+ README.md | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit 94cd0ed2a1ca457e3e540a76375c067d805aa93b
+Author: nikhilpato <nikhilpatolia@gmail.com>
+Date:   Thu Dec 12 01:58:26 2019 -0800
+
+    R6 in progress, idk how to work the JDBC but I made the MySQL Query
+
+ choiceHandler.java | 113 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 113 insertions(+)
+
+commit dfd4cbf6af4c88b215b37973264332703835c5c0
+Author: Charles Zoeller <35240554+czoeller1@users.noreply.github.com>
+Date:   Thu Dec 12 00:12:14 2019 -0800
+
+    Added Requirement 3
+
+ choiceHandler.java | 114 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 114 insertions(+)
+
+commit a7d7c2e183adf109e17799264823e4406ac817d5
+Author: brianphan90 <bphan08@calpoly.edu>
+Date:   Tue Dec 10 18:35:25 2019 -0800
+
+    Create README.md
+
+ README.md | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit a5897e48da70aadbd954466f7fd2e9662278949e
+Author: Brian Phan <bphan08@unix3.csc.calpoly.edu>
+Date:   Tue Dec 10 18:34:39 2019 -0800
+
+    finished r5
+
+ choiceHandler.class | Bin 0 -> 6463 bytes
+ choiceHandler.java  | 115 ++++++++++++++++++++++++++++++++++++++++++++++++++--
+ connection.class    | Bin 1000 -> 1023 bytes
+ connection.java     |   3 +-
+ setup.sh            |   1 +
+ 5 files changed, 114 insertions(+), 5 deletions(-)
+
+commit f74e0406325d6d42da0e6cef00320bc38b15caa6
+Author: Brian Phan <bphan08@unix3.csc.calpoly.edu>
+Date:   Tue Dec 10 13:45:29 2019 -0800
+
+    update
+
+ choiceHandler.java |  55 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ connection.class   | Bin 1013 -> 1000 bytes
+ connection.java    |  27 +++++++++++++++++++++++---
+ 3 files changed, 79 insertions(+), 3 deletions(-)
+
+commit d7d5f9ae6fd69a22a96a31984b1cbf74aaad5a5c
+Author: Brian Phan <bphan08@unix3.csc.calpoly.edu>
+Date:   Tue Dec 10 13:38:22 2019 -0800
+
+    init
+
+ connection.class                | Bin 0 -> 1013 bytes
+ connection.java                 |  26 ++++++++++++++++++++++++++
+ mysql-connector-java-8.0.16.jar | Bin 0 -> 2293144 bytes
+ setup.sh                        |   5 +++++
+ 4 files changed, 31 insertions(+)
