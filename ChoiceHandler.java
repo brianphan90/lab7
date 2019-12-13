@@ -486,7 +486,7 @@ public class ChoiceHandler{
                         int count = 0;
                         System.out.format("%30s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s\n", "RoomName", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Total");
                         while (rs.next()) {
-                            System.out.format("%30s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s\n",
+                            System.out.format("%30s |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f |$%10.2f\n",
                                     rs.getString("RoomName"), rs.getDouble("January"), rs.getDouble("February"), rs.getDouble("March")
                                     , rs.getDouble("April"), rs.getDouble("May"), rs.getDouble("June"), rs.getDouble("July")
                                     , rs.getDouble("August"), rs.getDouble("September"), rs.getDouble("October"), rs.getDouble("November")
