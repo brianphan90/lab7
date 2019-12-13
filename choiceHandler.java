@@ -11,6 +11,7 @@ public class choiceHandler {
     public void handle(int choice){
         switch (choice){
             case 1:
+                roomsAndRates();
                 break;
             case 2:
                 break;
@@ -28,6 +29,96 @@ public class choiceHandler {
 
         }
 
+    }
+
+    public void roomsAndRates() throws SQLException{
+        try (Connection conn = DriverManager.getConnection
+            (System.getenv("LAB7_JDBC_URL"), System.getenv("LAB7_JDBC_USER"), 
+            System.getenv("LAB7_JDBC_PW"))) {
+
+            String sql = 
+                "with RoomReservations as ( " +
+                "select Room, " +
+                "( " +
+                "case " +
+                "when (datediff(curdate(), CheckIn) > 180) " +
+                "then (date_add(curdate(), interval -180 day)) " +
+                "else CheckIn " +
+                "end " +
+                ") " +
+                "as CheckIn,  " +
+                "( " +
+                "case " +
+                "when (CheckOut > curdate()) " +
+                "then (date_add(curdate(), interval 1 day)) " +
+                "else CheckOut " +
+                "end " +
+                ") " +
+                "as CheckOut " +
+                "from lab7_reservations " +
+                "where (curdate() >= CheckIn " +
+                "or curdate() > CheckOut) " +
+                "and " +
+                "(datediff(curdate(), CheckIn) <= 180 " +
+                "or datediff(curdate(), CheckOut) <= 180) " +
+                "order by Room " +
+                "), PopularityScores as ( " +
+                "select Room,  " +
+                "round(sum(datediff(CheckOut, CheckIn)) / 180, 2) " +
+                "as PopularityScore " +
+                "from RoomReservations " +
+                "group by Room " +
+                "order by PopularityScore " +
+                "), PastReservations as ( " +
+                "select Room, CheckIn, CheckOut " +
+                "from lab7_reservations " +
+                "where CheckOut <= curdate() " +
+                "), MostRecentReservation as ( " +
+                "select Room, CheckOut as MostRecentCheckOut, " +
+                "datediff(CheckOut, CheckIn) as MostRecentLength " +
+                "from PastReservations " +
+                "where (Room, CheckOut) in " +
+                "( " +
+                "select Room, max(CheckOut) " +
+                "from PastReservations " +
+                "group by Room " +
+                ") " +
+                "), FutureReservations as ( " +
+                "select Room, CheckIn, CheckOut " +
+                "from lab7_reservations " +
+                "where CheckOut > curdate() " +
+                "), AvailableCheckInDates as ( " +
+                "select Room, CheckOut as PossibleCheckIn " +
+                "from FutureReservations " +
+                "where (Room, CheckOut) not in ( " +
+                "select Room, CheckIn " +
+                "from FutureReservations " +
+                ") " +
+                "), NextAvailableCheckIn as ( " +
+                "select Room, min(PossibleCheckIn)  " +
+                "as NextAvailableDate " +
+                "from AvailableCheckInDates " +
+                "group by Room " +
+                ") " +
+                "select mr.Room, PopularityScore, " +
+                "NextAvailableDate, " +
+                "MostRecentLength, " +
+                "MostRecentCheckOut " +
+                "from PopularityScores ps " +
+                "join MostRecentReservation mr " +
+                "on ps.Room = mr.Room " +
+                "join NextAvailableCheckIn nci " +
+                "on nci.Room = mr.Room " +
+                "order by PopularityScore desc; ";
+
+            try(Statement stmt = conn.createStatement()
+                ResultSet rs = stmt.executeQuery(sql)){
+
+                
+
+            }
+
+        }
     }
 
    public void updateRes() {
