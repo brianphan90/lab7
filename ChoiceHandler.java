@@ -484,9 +484,9 @@ public class ChoiceHandler{
                 {
                     try (ResultSet rs = pstmt.executeQuery()){
                         int count = 0;
-                        System.out.format("%s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%8.2s\n", "RoomName", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Total");
+                        System.out.format("%30s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s\n", "RoomName", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Total");
                         while (rs.next()) {
-                            System.out.format("%30s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%7.2s |%8.2s\n",
+                            System.out.format("%30s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s |%10s\n",
                                     rs.getString("RoomName"), rs.getDouble("January"), rs.getDouble("February"), rs.getDouble("March")
                                     , rs.getDouble("April"), rs.getDouble("May"), rs.getDouble("June"), rs.getDouble("July")
                                     , rs.getDouble("August"), rs.getDouble("September"), rs.getDouble("October"), rs.getDouble("November")
