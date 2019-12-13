@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.Date;
 public class ChoiceHandler{
 
-    public static void handle(int choice) throws SQLException{
+    public void handle(int choice) throws SQLException {
         switch (choice){
             case 1:
                 roomsAndRates();

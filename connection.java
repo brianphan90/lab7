@@ -21,7 +21,7 @@ public class connection {
     }*/
 
     public static void showOptions(){
-        choiceHandler handler = new choiceHandler();
+        ChoiceHandler handler = new ChoiceHandler();
         String prompt = "(0) Quit\n" +
                 "(1) Rooms and Rates\n" +
                 "(2) Reservations\n" +
@@ -35,7 +35,12 @@ public class connection {
         int choice = input.nextInt();
         while(choice != 0){
             System.out.println(choice);
-            handler.handle(choice);
+            try {
+                handler.handle(choice);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
             System.out.print("Enter input: ");
             choice = input.nextInt();
         }

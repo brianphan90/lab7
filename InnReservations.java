@@ -19,6 +19,7 @@ public class InnReservations {
     }*/
 
     public static void showOptions() throws SQLException{
+        ChoiceHandler ch = new ChoiceHandler();        
         String prompt = "(0) Quit\n" +
                 "(1) Rooms and Rates\n" +
                 "(2) Reservations\n" +
@@ -32,14 +33,19 @@ public class InnReservations {
         int choice = input.nextInt();
         while(choice != 0){
             System.out.println(choice);
-            ChoiceHandler.handle(choice);
+            
+            ch.handle(choice);
             System.out.print("Enter input: ");
             choice = input.nextInt();
         }
     }
 
     public static void main(String[] var0) throws SQLException {
-        showOptions();
-
+        try{
+            showOptions();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
